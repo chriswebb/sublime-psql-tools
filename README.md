@@ -1,6 +1,14 @@
 # PSQLExecute
 ***[Sublime Text 3+](http://www.sublimetext.com/) Package. Install via an updated version of  [Package Control 2+](https://sublime.wbond.net/installation). Just &#42;&#42;DON'T&#42;&#42; install manually.***
 
+## Installation
+
+1. If you don't have it already, follow the instructions on [https://sublime.wbond.net/installation](https://sublime.wbond.net/installation) to install Package Control 2+.
+2. In Sublime Text, press <kbd>Ctrl+Shift+P</kbd> (Win, Linux) or <kbd>⌘⇧p</kbd> (OS X) to open the command palette.
+3. Choose `Package Control: Select Repository`.
+4. Choose `Package Control: Install Package`.
+5. Select **PSQLExecute**.
+
 ## Description 
 A plugin for Sublime Text 3 that allows the execution of PSQL commands directly from the editor.
 
