@@ -1,4 +1,3 @@
-
 [
     {
         "caption": "Preferences",
@@ -28,6 +27,26 @@
                             },
                             { "caption": "-" }
                         ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "caption": "Tools",
+        "mnemonic": "t",
+        "id": "tools",
+        "children":
+        [
+            {
+                "caption": "PSQL Execute",
+                "mnemonic": "f",
+                "id": "psql",
+                "children":
+                [
+                    {
+                        "command": "psql_execute",
+                        "caption": "Local Postgres"
                     }
                 ]
             }
