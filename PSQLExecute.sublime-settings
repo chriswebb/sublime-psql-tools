@@ -1,0 +1,13 @@
+{
+	// default path for psql executable
+	"psql_path": "/usr/bin/psql",
+
+	// default database to query
+	"default_database": "postgres",
+	// default host of psql server
+  "default_host": "", // blank for unix sockets
+  // default port of psql server
+  "default_port": "5432",
+  // default user to connect to psql server
+  "default_user": "postgres"
+}
