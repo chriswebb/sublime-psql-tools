@@ -1,0 +1,3 @@
+[
+	{ "keys": ["super+shift+alt+b"], "command": "psql_execute" }
+]
