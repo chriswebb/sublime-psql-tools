@@ -32,16 +32,16 @@ To add a new database called "my_database" to the Database menu under System Pre
         "id": "package-settings",
         "children":
         [{
-            "id": "psql-execute-settings",
+            "id": "psql-settings",
             "children":
             [{
-                "id": "psql-execute-settings-database",
+                "id": "psql-settings-database",
                 "children":
                 [{
                     "caption": "my_database",
                     "command": "psql_config_set", "args": 
                     {
-                        "name": "dbname",
+                        "name": "database",
                         "value": "my_database"
                     }
                 }]
@@ -97,13 +97,13 @@ To add a new Execute method to the non-default database "my_other_database" to t
 }]
 ```
 
-Next click Tools > PostgreSQL > Execute (Production) to run against the new settings. 
+Next click Tools > PostgreSQL > Execute (Other Database) to run against the other database. 
 
 ## References
 
 Commands provided by this plugin:
 
-- `psql` : `{settings}`
+- `psql` : 'args' : `Settings`
 
         Execute PostgreSQL query with data supplied from one of the following three methods:
 
@@ -111,17 +111,17 @@ Commands provided by this plugin:
         - Selected text of the current view
         - If no text selected, all of the text in the current view
 
-- `psql_config_set` : `{name, value}`
+- `psql_config_set` : `args` : `{name, value}`
 
         Override default configuration settings with user supplied value.
 
-- `psql_config_unset` : `{name}`
+- `psql_config_unset` : `args` : `{name}`
 
-        Remove user override of default configuration settings with user supplied value.
+        Remove user override of default configuration settings.
 
 - `psql_config_clear` : 
 
-        Clear all user overrides from the settings.
+        Clear all user overrides from the settings to the defaults.
 
 - `psql_config_save` :
 
@@ -165,7 +165,7 @@ The following is a mapping of PostgreSQL environment variable names to internal 
 - `PGHOST`: `host` 
 - `PGHOSTADDR`: `hostaddr` 
 - `PGPORT`: `port` 
-- `PGDATABASE`: `dbname`
+- `PGDATABASE`: `database`
 - `PGUSER`: `user` 
 - `PGPASSWORD`: `password`
 - `PGPASSFILE`: `passfile` 
