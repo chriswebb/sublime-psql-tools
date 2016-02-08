@@ -1,0 +1,141 @@
+[
+    {
+        "caption": "Preferences: PostgreSQL Execute – Default",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/PostgreSQLExecute/PostgreSQLExecute.sublime-settings"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Execute – User",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/User/PostgreSQLExecute.sublime-settings"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Execute Key Bindings – Default",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/PostgreSQLExecute/Default (Windows).sublime-keymap",
+            "platform": "Windows"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Execute Key Bindings – Default",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/PostgreSQLExecute/Default (OSX).sublime-keymap",
+            "platform": "OSX"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Execute Key Bindings – Default",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/PostgreSQLExecute/Default (Linux).sublime-keymap",
+            "platform": "Linux"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Execute Key Bindings – User",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/User/Default (Windows).sublime-keymap",
+            "platform": "Windows"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Execute Key Bindings – User",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/User/Default (OSX).sublime-keymap",
+            "platform": "OSX"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Execute Key Bindings – User",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/User/Default (Linux).sublime-keymap",
+            "platform": "Linux"
+        }
+    },
+    {
+        "caption": "Execute PostgreSQL query against default settings",
+        "command": "psql_execute"
+    },
+    {
+        "caption": "Execute PostgreSQL query against postgres database",
+        "command": "psql_execute", "args":
+        {
+            "database": "postgres"
+        }
+    },
+    {
+        "caption": "Execute PostgreSQL query against 'postgres' database with 'postgres' user",
+        "command": "psql_execute", "args":
+        {
+            "database": "postgres",
+            "user": "postgres"
+        }
+    },
+    {
+        "caption": "Set variable in PostgreSQL Execute configuration",
+        "command": "psql_config_set"
+    },
+    {
+        "caption": "Set database in PostgreSQL Execute configuration",
+        "command": "psql_config_set",
+        "args": { "name": "database" }
+    },
+    {
+        "caption": "Set host in PostgreSQL Execute configuration",
+        "command": "psql_config_set",
+        "args": { "name": "host" }
+    },
+    {
+        "caption": "Set port in PostgreSQL Execute configuration",
+        "command": "psql_config_set",
+        "args": { "name": "port" }
+    },
+    {
+        "caption": "Set user in PostgreSQL Execute configuration",
+        "command": "psql_config_set",
+        "args": { "name": "user" }
+    },
+    {
+        "caption": "Set password in PostgreSQL Execute configuration",
+        "command": "psql_config_set",
+        "args": { "name": "password" }
+    },
+    {
+        "caption": "Unset variable in PostgreSQL Execute configuration",
+        "command": "psql_config_unset"
+    },
+    {
+        "caption": "Unset database in PostgreSQL Execute configuration",
+        "command": "psql_config_set",
+        "args": { "name": "database" }
+    },
+    {
+        "caption": "Unset host in PostgreSQL Execute configuration",
+        "command": "psql_config_unset",
+        "args": { "name": "host" }
+    },
+    {
+        "caption": "Unset port in PostgreSQL Execute configuration",
+        "command": "psql_config_unset",
+        "args": { "name": "port" }
+    },
+    {
+        "caption": "Unset user in PostgreSQL Execute configuration",
+        "command": "psql_config_unset",
+        "args": { "name": "user" }
+    },
+    {
+        "caption": "Unset password in PostgreSQL Execute configuration",
+        "command": "psql_config_unset",
+        "args": { "name": "password" }
+    }
+]
