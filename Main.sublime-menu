@@ -1,52 +1,222 @@
 [
     {
-        "caption": "Preferences",
-        "mnemonic": "n",
+        "id": "tools",
+        "children": 
+        [
+            {
+                "caption": "PostgreSQL",
+                "id": "psql-execute-tools",
+                "children": 
+                [
+                    {
+                        "caption": "Execute (default)",
+                        "command": "psql_execute"
+                    },
+                    {
+                        "caption": "Execute (postgres)",
+                        "command": "psql_execute",
+                        "args": {"database": "postgres"}
+                    },
+                    { "caption": "-"}
+                ]
+            },
+            { "caption": "-" }
+        ]
+    },
+    {
         "id": "preferences",
         "children":
         [
             {
-                "caption": "Package Settings",
-                "mnemonic": "P",
                 "id": "package-settings",
                 "children":
                 [
                     {
-                        "caption": "PSQLExecute",
+                        "caption": "PostgreSQL Execute",
+                        "id": "psql-execute-settings",
                         "children":
                         [
                             {
+                                "caption": "Settings – Default",
                                 "command": "open_file",
-                                "args": {"file": "${packages}/PSQLExecute/PSQLExecute.sublime-settings"},
-                                "caption": "Settings – Default"
+                                "args": {"file": "${packages}/PostgreSQLExecute/PostgreSQLExecute.sublime-settings"}
                             },
                             {
+                                "caption": "Settings – User",
                                 "command": "open_file",
-                                "args": {"file": "${packages}/User/PSQLExecute.sublime-settings"},
-                                "caption": "Settings – User"
+                                "args": {"file": "${packages}/User/PostgreSQLExecute.sublime-settings"}
                             },
-                            { "caption": "-" }
+                            { "caption": "-" },
+                            {
+                                "caption": "Key Bindings – Default",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/PostgreSQLExecute/Default (Windows).sublime-keymap",
+                                    "platform": "Windows"
+                                }
+                            },
+                            {
+                                "caption": "Key Bindings – Default",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/PostgreSQLExecute/Default (OSX).sublime-keymap",
+                                    "platform": "OSX"
+                                }
+                            },
+                            {
+                                "caption": "Key Bindings – Default",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/PostgreSQLExecute/Default (Linux).sublime-keymap",
+                                    "platform": "Linux"
+                                }
+                            },
+                            {
+                                "caption": "Key Bindings – User",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/User/Default (Windows).sublime-keymap",
+                                    "platform": "Windows"
+                                }
+                            },
+                            {
+                                "caption": "Key Bindings – User",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/User/Default (OSX).sublime-keymap",
+                                    "platform": "OSX"
+                                }
+                            },
+                            {
+                                "caption": "Key Bindings – User",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/User/Default (Linux).sublime-keymap",
+                                    "platform": "Linux"
+                                }
+                            },
+                            { "caption": "-" },
+                            {
+                                "caption": "Set Variable",
+                                "command": "psql_config_set"
+                            },
+                            {
+                                "caption": "Unset Variable",
+                                "command": "psql_config_unset"
+                            },
+                            { "caption": "-"},
+                            {
+                                "caption": "Database",
+                                "children": 
+                                [
+                                    {
+                                        "caption": "Set",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "database" }
+                                    },
+                                    {
+                                        "caption": "Unset",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "database" }
+                                    },
+                                    { "caption": "-"},
+                                    {
+                                        "caption": "postgres (default)",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "database", "value": "postgres" }
+                                    }
+                                ]
+                            },
+                            {
+                                "caption": "Host",
+                                "children": 
+                                [
+                                    {
+                                        "caption": "Set",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "host" }
+                                    },
+                                    {
+                                        "caption": "Unset (default)",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "host" }
+                                    },
+                                    { "caption": "-"},
+                                    {
+                                        "caption": "localhost",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "host", "value": "localhost" }
+                                    }
+                                ]
+                            },
+                            {
+                                "caption": "Port",
+                                "children": 
+                                [
+                                    {
+                                        "caption": "Set",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "port" }
+                                    },
+                                    {
+                                        "caption": "Unset",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "port" }
+                                    },
+                                    { "caption": "-"},
+                                    {
+                                        "caption": "5432 (default)",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "port", "value": "5432" }
+                                    },
+                                    {
+                                        "caption": "6432",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "port", "value": "6432" }
+                                    }
+                                ]
+
+                            },
+                            {
+                                "caption": "User",
+                                "children": 
+                                [
+                                    {
+                                        "caption": "Set",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "user" }
+                                    },
+                                    {
+                                        "caption": "Unset",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "user" }
+                                    },
+                                    { "caption": "-"},
+                                    {
+                                        "caption": "postgres (default)",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "user", "value": "postgres" }
+                                    }
+                                ]
+                            },
+                            {
+                                "caption": "Password",
+                                "children": 
+                                [
+                                    {
+                                        "caption": "Set",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "password" }
+                                    },
+                                    {
+                                        "caption": "Unset (default)",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "password" }
+                                    },
+                                    { "caption": "-"}
+                                ]
+                            }
                         ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "caption": "Tools",
-        "mnemonic": "t",
-        "id": "tools",
-        "children":
-        [
-            {
-                "caption": "PSQL Execute",
-                "mnemonic": "f",
-                "id": "psql",
-                "children":
-                [
-                    {
-                        "command": "psql_execute",
-                        "caption": "Local Postgres"
                     }
                 ]
             }
