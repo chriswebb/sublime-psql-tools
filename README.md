@@ -49,11 +49,11 @@ To add a new database called "my_database" to the Database menu under System Pre
 }]
 ```
 
+then browse to Main > Preferences > Package Settings > PSQL Execute > Database and select your newly added database.
+
 ### Add new execute option with custom values example
 
-To add a new Execute method to the non-default hostname "production.mysite" to the Database menu under System Preferences:
-
-If you would like to add new items to the Tools menu with non-default options. 
+To add a new Execute method to the non-default hostname "production.mysite" to the PostgreSQL menu under Tools:
 
 ```js
 [{
@@ -95,7 +95,7 @@ If you would like to add new items to the Tools menu with non-default options.
 }]
 ```
 
-then browse to Main > Preferences > Package Settings > PSQL Execute > Database and select your newly added database.
+then select your text and click Tools > PostgreSQL > Execute (Production)
 
 ## Contributing
 1. Fork it!
