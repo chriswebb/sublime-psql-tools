@@ -101,26 +101,26 @@ Next click Tools > PostgreSQL > Execute (Production) to run against the new sett
 
 Commands provided by this plugin:
 
-- `psql` : Settings
+- `psql` : `Settings`
 
         Execute PostgreSQL query with data supplied from one of the following three methods:
         * Files specified in the 'files' setting
         * Selected text of the current view
         * If no text selected, all of the text in the current view
 
-- `psql_config_set` : Name, Value
+- `psql_config_set` : `Name, Value`
 
         Override default configuration settings with user supplied value.
 
-- `psql_config_unset` : Name
+- `psql_config_unset` : `Name`
 
         Remove user override of default configuration settings with user supplied value.
 
-- `psql_config_clear` : None
+- `psql_config_clear` : `None`
 
         Clear all user overrides from the settings.
 
-- `psql_config_save` : None
+- `psql_config_save` : `None`
 
         Save the current overrides to the default values stored for the user.
 
