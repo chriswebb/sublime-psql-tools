@@ -160,7 +160,7 @@ Values used when calling psql. To overwrite default values select Preferences > 
 
 PostgreSQL settings are based off of environmental variables. The list of supported settings is located [here](http://www.postgresql.org/docs/current/static/libpq-envars.html) on the [PostgreSQL Documention site](http://www.postgresql.org/docs/current/static/).
 
-The following is a mapping of internal settings names to PostgreSQL Environment Variables:
+The following is a mapping of PostgreSQL environment variable names to internal settings names:
 
 - `PGHOST`: `host` 
 - `PGHOSTADDR`: `hostaddr` 
