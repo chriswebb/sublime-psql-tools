@@ -101,7 +101,7 @@ Next click Tools > PostgreSQL > Execute (Production) to run against the new sett
 
 Commands provided by this plugin:
 
-- `psql({Settings})` :
+- `psql` : `{settings}`
 
         Execute PostgreSQL query with data supplied from one of the following three methods:
 
@@ -109,19 +109,19 @@ Commands provided by this plugin:
         - Selected text of the current view
         - If no text selected, all of the text in the current view
 
-- `psql_config_set({Name, Value})` : 
+- `psql_config_set` : `{name, value}`
 
         Override default configuration settings with user supplied value.
 
-- `psql_config_unset({Name})` :
+- `psql_config_unset` : `{name}`
 
         Remove user override of default configuration settings with user supplied value.
 
-- `psql_config_clear()` : 
+- `psql_config_clear` : 
 
         Clear all user overrides from the settings.
 
-- `psql_config_save()` :
+- `psql_config_save` :
 
         Save the current overrides to the default values stored for the user.
 
