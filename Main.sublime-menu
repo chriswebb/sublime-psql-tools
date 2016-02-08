@@ -6,13 +6,13 @@
         "id": "psql-tools",
         "children": 
         [{
-            "caption": "Execute (default)",
+            "caption": "Execute",
             "command": "psql"
         },
         {
-            "caption": "Execute (postgres)",
+            "caption": "Execute (New File)",
             "command": "psql",
-            "args": {"database": "postgres"}
+            "args": {"output_to_newfile": "True"}
         },
         { "caption": "-"}]
     },
@@ -108,7 +108,7 @@
             { "caption": "-"},
             {
                 "caption": "Database",
-                "id": "psql-execute-settings-database",
+                "id": "psql-settings-database",
                 "children": 
                 [{
                     "caption": "Set",
@@ -129,7 +129,7 @@
             },
             {
                 "caption": "Host",
-                "id": "psql-execute-settings-host",
+                "id": "psql-settings-host",
                 "children": 
                 [{
                     "caption": "Set",
@@ -150,7 +150,7 @@
             },
             {
                 "caption": "Port",
-                "id": "psql-execute-settings-port",
+                "id": "psql-settings-port",
                 "children": 
                 [{
                     "caption": "Set",
@@ -177,7 +177,7 @@
             },
             {
                 "caption": "User",
-                "id": "psql-execute-settings-user",
+                "id": "psql-settings-user",
                 "children": 
                 [{
                     "caption": "Set",
@@ -198,7 +198,7 @@
             },
             {
                 "caption": "Password",
-                "id": "psql-execute-settings-password",
+                "id": "psql-settings-password",
                 "children": 
                 [{
                     "caption": "Set",
@@ -215,7 +215,7 @@
             { "caption": "-" },
             {
                 "caption": "RequireSSL",
-                "id": "psql-execute-settings-requiressl",
+                "id": "psql-settings-requiressl",
                 "children": 
                 [{
                     "caption": "Set",
@@ -243,7 +243,7 @@
             { "caption": "-" },
             {
                 "caption": "SSL Mode",
-                "id": "psql-execute-settings-sslmode",
+                "id": "psql-settings-sslmode",
                 "children": 
                 [{
                     "caption": "Set",
