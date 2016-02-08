@@ -1,3 +1,3 @@
 [
-	{ "keys": ["ctrl+shift+alt+b"], "command": "psql_execute" }
+	{ "keys": ["ctrl+shift+alt+b"], "command": "psql" }
 ]

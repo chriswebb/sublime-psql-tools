@@ -1,305 +1,287 @@
-[
-    {
-        "id": "tools",
+[{
+    "id": "tools",
+    "children": 
+    [{
+        "caption": "PostgreSQL",
+        "id": "psql-tools",
         "children": 
-        [
-            {
-                "caption": "PostgreSQL",
-                "id": "psql-execute-tools",
-                "children": 
-                [
-                    {
-                        "caption": "Execute (default)",
-                        "command": "psql_execute"
-                    },
-                    {
-                        "caption": "Execute (postgres)",
-                        "command": "psql_execute",
-                        "args": {"database": "postgres"}
-                    },
-                    { "caption": "-"}
-                ]
-            },
-            { "caption": "-" }
-        ]
+        [{
+            "caption": "Execute (default)",
+            "command": "psql"
+        },
+        {
+            "caption": "Execute (postgres)",
+            "command": "psql",
+            "args": {"database": "postgres"}
+        },
+        { "caption": "-"}]
     },
-    {
-        "id": "preferences",
+    { "caption": "-" }]
+},
+{
+    "id": "preferences",
+    "children":
+    [{
+        "id": "package-settings",
         "children":
-        [
+        [{
+            "caption": "PostgreSQL",
+            "id": "psql-settings",
+            "children":
+            [{
+                "caption": "Settings – Default",
+                "command": "open_file",
+                "args": {"file": "${packages}/PostgreSQL/PostgreSQL.sublime-settings"}
+            },
             {
-                "id": "package-settings",
-                "children":
-                [
-                    {
-                        "caption": "PostgreSQL Execute",
-                        "id": "psql-execute-settings",
-                        "children":
-                        [
-                            {
-                                "caption": "Settings – Default",
-                                "command": "open_file",
-                                "args": {"file": "${packages}/PostgreSQLExecute/PostgreSQLExecute.sublime-settings"}
-                            },
-                            {
-                                "caption": "Settings – User",
-                                "command": "open_file",
-                                "args": {"file": "${packages}/User/PostgreSQLExecute.sublime-settings"}
-                            },
-                            { "caption": "-" },
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/PostgreSQLExecute/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/PostgreSQLExecute/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – Default",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/PostgreSQLExecute/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
-                                }
-                            },
-                            {
-                                "caption": "Key Bindings – User",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
-                                }
-                            },
-                            { "caption": "-" },
-                            {
-                                "caption": "Set Variable",
-                                "command": "psql_config_set"
-                            },
-                            {
-                                "caption": "Unset Variable",
-                                "command": "psql_config_unset"
-                            },
-                            { "caption": "-"},
-                            {
-                                "caption": "Database",
-                                "id": "psql-execute-settings-database",
-                                "children": 
-                                [
-                                    {
-                                        "caption": "Set",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "database" }
-                                    },
-                                    {
-                                        "caption": "Unset",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "database" }
-                                    },
-                                    { "caption": "-"},
-                                    {
-                                        "caption": "postgres (default)",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "database", "value": "postgres" }
-                                    }
-                                ]
-                            },
-                            {
-                                "caption": "Host",
-                                "id": "psql-execute-settings-host",
-                                "children": 
-                                [
-                                    {
-                                        "caption": "Set",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "host" }
-                                    },
-                                    {
-                                        "caption": "Unset (default)",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "host" }
-                                    },
-                                    { "caption": "-"},
-                                    {
-                                        "caption": "localhost",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "host", "value": "localhost" }
-                                    }
-                                ]
-                            },
-                            {
-                                "caption": "Port",
-                                "id": "psql-execute-settings-port",
-                                "children": 
-                                [
-                                    {
-                                        "caption": "Set",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "port" }
-                                    },
-                                    {
-                                        "caption": "Unset",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "port" }
-                                    },
-                                    { "caption": "-"},
-                                    {
-                                        "caption": "5432 (default)",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "port", "value": "5432" }
-                                    },
-                                    {
-                                        "caption": "6432",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "port", "value": "6432" }
-                                    }
-                                ]
+                "caption": "Settings – User",
+                "command": "open_file",
+                "args": {"file": "${packages}/User/PostgreSQL.sublime-settings"}
+            },
+            { "caption": "-" },
+            {
+                "caption": "Key Bindings – Default",
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/PostgreSQL/Default (Windows).sublime-keymap",
+                    "platform": "Windows"
+                }
+            },
+            {
+                "caption": "Key Bindings – Default",
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/PostgreSQL/Default (OSX).sublime-keymap",
+                    "platform": "OSX"
+                }
+            },
+            {
+                "caption": "Key Bindings – Default",
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/PostgreSQL/Default (Linux).sublime-keymap",
+                    "platform": "Linux"
+                }
+            },
+            {
+                "caption": "Key Bindings – User",
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/User/Default (Windows).sublime-keymap",
+                    "platform": "Windows"
+                }
+            },
+            {
+                "caption": "Key Bindings – User",
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/User/Default (OSX).sublime-keymap",
+                    "platform": "OSX"
+                }
+            },
+            {
+                "caption": "Key Bindings – User",
+                "command": "open_file",
+                "args": {
+                    "file": "${packages}/User/Default (Linux).sublime-keymap",
+                    "platform": "Linux"
+                }
+            },
+            { "caption": "-" },
+            {
+                "caption": "Save to Defaults",
+                "command": "psql_config_save"
+            },
+            {
+                "caption": "Clear to Defaults",
+                "command": "psql_config_clear"
+            },
+            { "caption": "-" },
+            {
+                "caption": "Set Variable",
+                "command": "psql_config_set"
+            },
+            {
+                "caption": "Unset Variable",
+                "command": "psql_config_unset"
+            },
+            { "caption": "-"},
+            {
+                "caption": "Database",
+                "id": "psql-execute-settings-database",
+                "children": 
+                [{
+                    "caption": "Set",
+                    "command": "psql_config_set",
+                    "args": { "name": "database" }
+                },
+                {
+                    "caption": "Unset",
+                    "command": "psql_config_unset",
+                    "args": { "name": "database" }
+                },
+                { "caption": "-"},
+                {
+                    "caption": "postgres (default)",
+                    "command": "psql_config_set",
+                    "args": { "name": "database", "value": "postgres" }
+                }]
+            },
+            {
+                "caption": "Host",
+                "id": "psql-execute-settings-host",
+                "children": 
+                [{
+                    "caption": "Set",
+                    "command": "psql_config_set",
+                    "args": { "name": "host" }
+                },
+                {
+                    "caption": "Unset (default)",
+                    "command": "psql_config_unset",
+                    "args": { "name": "host" }
+                },
+                { "caption": "-"},
+                {
+                    "caption": "localhost",
+                    "command": "psql_config_set",
+                    "args": { "name": "host", "value": "localhost" }
+                }]
+            },
+            {
+                "caption": "Port",
+                "id": "psql-execute-settings-port",
+                "children": 
+                [{
+                    "caption": "Set",
+                    "command": "psql_config_set",
+                    "args": { "name": "port" }
+                },
+                {
+                    "caption": "Unset",
+                    "command": "psql_config_unset",
+                    "args": { "name": "port" }
+                },
+                { "caption": "-"},
+                {
+                    "caption": "5432 (default)",
+                    "command": "psql_config_set",
+                    "args": { "name": "port", "value": "5432" }
+                },
+                {
+                    "caption": "6432",
+                    "command": "psql_config_set",
+                    "args": { "name": "port", "value": "6432" }
+                }]
 
-                            },
-                            {
-                                "caption": "User",
-                                "id": "psql-execute-settings-user",
-                                "children": 
-                                [
-                                    {
-                                        "caption": "Set",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "user" }
-                                    },
-                                    {
-                                        "caption": "Unset",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "user" }
-                                    },
-                                    { "caption": "-"},
-                                    {
-                                        "caption": "postgres (default)",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "user", "value": "postgres" }
-                                    }
-                                ]
-                            },
-                            {
-                                "caption": "Password",
-                                "id": "psql-execute-settings-password",
-                                "children": 
-                                [
-                                    {
-                                        "caption": "Set",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "password" }
-                                    },
-                                    {
-                                        "caption": "Unset (default)",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "password" }
-                                    },
-                                    { "caption": "-"}
-                                ]
-                            },
-                            { "caption": "-" },
-                            {
-                                "caption": "RequireSSL",
-                                "id": "psql-execute-settings-requiressl",
-                                "children": 
-                                [
-                                    {
-                                        "caption": "Set",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "requiressl" }
-                                    },
-                                    {
-                                        "caption": "Unset (default)",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "requiressl" }
-                                    },
-                                    { "caption": "-"},
-                                    {
-                                        "caption": "True",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "requiressl", "value": "true" }
-                                    },
-                                    {
-                                        "caption": "False",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "requiressl", "value": "false" }
-                                    },
-                                    { "caption": "-"}
-                                ]
-                            },
-                            { "caption": "-" },
-                            {
-                                "caption": "SSL Mode",
-                                "id": "psql-execute-settings-sslmode",
-                                "children": 
-                                [
-                                    {
-                                        "caption": "Set",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "sslmode" }
-                                    },
-                                    {
-                                        "caption": "Unset (default)",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "sslmode" }
-                                    },
-                                    { "caption": "-"},
-                                    {
-                                        "caption": "Allow",
-                                        "command": "psql_config_set",
-                                        "args": { "name": "sslmode", "value": "allow" }
-                                    },
-                                    {
-                                        "caption": "Disable",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "sslmode", "value": "disable" }
-                                    },
-                                    {
-                                        "caption": "Prefer",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "sslmode", "value": "prefer" }
-                                    },
-                                    {
-                                        "caption": "Verify CA",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "sslmode", "value": "verify-ca" }
-                                    },
-                                    {
-                                        "caption": "Verify Full",
-                                        "command": "psql_config_unset",
-                                        "args": { "name": "sslmode", "value": "verify-full" }
-                                    },
-                                    { "caption": "-"}
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-]
+            },
+            {
+                "caption": "User",
+                "id": "psql-execute-settings-user",
+                "children": 
+                [{
+                    "caption": "Set",
+                    "command": "psql_config_set",
+                    "args": { "name": "user" }
+                },
+                {
+                    "caption": "Unset",
+                    "command": "psql_config_unset",
+                    "args": { "name": "user" }
+                },
+                { "caption": "-"},
+                {
+                    "caption": "postgres (default)",
+                    "command": "psql_config_set",
+                    "args": { "name": "user", "value": "postgres" }
+                }]
+            },
+            {
+                "caption": "Password",
+                "id": "psql-execute-settings-password",
+                "children": 
+                [{
+                    "caption": "Set",
+                    "command": "psql_config_set",
+                    "args": { "name": "password" }
+                },
+                {
+                    "caption": "Unset (default)",
+                    "command": "psql_config_unset",
+                    "args": { "name": "password" }
+                },
+                { "caption": "-"}]
+            },
+            { "caption": "-" },
+            {
+                "caption": "RequireSSL",
+                "id": "psql-execute-settings-requiressl",
+                "children": 
+                [{
+                    "caption": "Set",
+                    "command": "psql_config_set",
+                    "args": { "name": "requiressl" }
+                },
+                {
+                    "caption": "Unset (default)",
+                    "command": "psql_config_unset",
+                    "args": { "name": "requiressl" }
+                },
+                { "caption": "-"},
+                {
+                    "caption": "True",
+                    "command": "psql_config_set",
+                    "args": { "name": "requiressl", "value": "true" }
+                },
+                {
+                    "caption": "False",
+                    "command": "psql_config_unset",
+                    "args": { "name": "requiressl", "value": "false" }
+                },
+                { "caption": "-"}]
+            },
+            { "caption": "-" },
+            {
+                "caption": "SSL Mode",
+                "id": "psql-execute-settings-sslmode",
+                "children": 
+                [{
+                    "caption": "Set",
+                    "command": "psql_config_set",
+                    "args": { "name": "sslmode" }
+                },
+                {
+                    "caption": "Unset (default)",
+                    "command": "psql_config_unset",
+                    "args": { "name": "sslmode" }
+                },
+                { "caption": "-"},
+                {
+                    "caption": "Allow",
+                    "command": "psql_config_set",
+                    "args": { "name": "sslmode", "value": "allow" }
+                },
+                {
+                    "caption": "Disable",
+                    "command": "psql_config_unset",
+                    "args": { "name": "sslmode", "value": "disable" }
+                },
+                {
+                    "caption": "Prefer",
+                    "command": "psql_config_unset",
+                    "args": { "name": "sslmode", "value": "prefer" }
+                },
+                {
+                    "caption": "Verify CA",
+                    "command": "psql_config_unset",
+                    "args": { "name": "sslmode", "value": "verify-ca" }
+                },
+                {
+                    "caption": "Verify Full",
+                    "command": "psql_config_unset",
+                    "args": { "name": "sslmode", "value": "verify-full" }
+                }]
+            }]
+        }]
+    }]
+}]

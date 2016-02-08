@@ -34,6 +34,7 @@ class PsqlExecuteSettings(MutableMapping):
     __instance = None
     __settings = None
     __defaults = {}
+    __settings_name = 'PostgreSQL.sublime-settings'
     __userspecified = {}
     postgres_variables = { 'host':'PGHOST', 'hostaddr':'PGHOSTADDR', 'port':'PGPORT', 
                               'database':'PGDATABASE', 'user':'PGUSER', 'password':'PGPASSWORD',
@@ -49,20 +50,26 @@ class PsqlExecuteSettings(MutableMapping):
                               'warn_on_empty_password':'', 'files': '' }
 
     def __new__(cls, *args, **kwargs):
-        if PsqlExecuteSettings.__instance is None:
-            PsqlExecuteSettings.__instance = MutableMapping.__new__(cls)
-
-        PsqlExecuteSettings.__instance.__reload_settings(dict(*args, **kwargs))
-        return PsqlExecuteSettings.__instance
+        if cls.__instance is None:
+            cls.__instance = MutableMapping.__new__(cls)
+            cls.__get_settings()
+        cls.__instance.__reload_settings(dict(*args, **kwargs))
+        return cls.__instance
 
     def __init__(self, *args, **kwargs):
         self.output_lock = Lock()
-        self.__settings = load_settings('PostgreSQLExecute.sublime-settings')
-        self.__settings.clear_on_change('reload')
-        self.__settings.add_on_change('reload', self.__reload)
 
-    def __reload(self):
-        self.__defaults = self.__userspecified.copy()
+    @classmethod
+    def __get_settings(cls):
+        if cls.__settings is None:
+            cls.__settings = load_settings(cls.__settings_name)
+            cls.__settings.clear_on_change('reload')
+            cls.__settings.add_on_change('reload', cls.__reload)
+        return cls.__settings
+
+    @classmethod
+    def __reload(cls):
+        cls.__defaults = cls.__userspecified.copy()
 
     def __reload_settings(self, settings):
         self.__reload()
@@ -100,7 +107,7 @@ class PsqlExecuteSettings(MutableMapping):
         if self.__keytransform__(name) in self.__defaults:
             return True
         else:
-            value = self.__settings.get('default_'+name)
+            value = self.__get_settings().get('default_'+name)
             if value:
                 return True
         return False
@@ -110,17 +117,20 @@ class PsqlExecuteSettings(MutableMapping):
 
     def __get(self, name):
         if self.__keytransform__(name) not in self.__defaults:
-            value = self.__settings.get('default_'+name)
+            value = self.__get_settings().get('default_'+name)
             if value:
                 self.__defaults[self.__keytransform__(name)] = value
         return self.__defaults[self.__keytransform__(name)]
 
     @classmethod
     def save(cls):
+        updates = False
         for name in cls.__userspecified:
-            cls.__settings.set('default_' + name, cls.__userspecified[name])
-        save_settings('PostgreSQLExecute.sublime-settings')
-        cls.clear()
+            updates = True
+            cls.__get_settings().set('default_' + name, cls.__userspecified[name])
+        if updates:
+            save_settings(cls.__settings_name)
+            cls.clear()
 
     @classmethod
     def clear(cls):
@@ -149,6 +159,7 @@ class PsqlConfigSaveCommand(TextCommand):
         return PsqlExecuteSettings.has_user_specified()
     def run(self, edit, *args, **kwargs):
         PsqlExecuteSettings.save()
+        status_message('PostgreSQL configuration saved to defaults.')
 
 
 class PsqlConfigClearCommand(TextCommand):
@@ -158,6 +169,7 @@ class PsqlConfigClearCommand(TextCommand):
         return PsqlExecuteSettings.has_user_specified()
     def run(self, edit, *args, **kwargs):
         PsqlExecuteSettings.clear()
+        status_message('PostgreSQL configuration cleared to defaults.')
   
 class PsqlConfigSetCommand(TextCommand):  
     def description(self):
