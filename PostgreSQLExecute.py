@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from sublime import load_settings, status_message, ok_cancel_dialog, Region, active_window
+from sublime import save_settings, load_settings, status_message, ok_cancel_dialog, Region, active_window
 from sublime_plugin import TextCommand
 from threading import Thread, Lock
 from time import time
@@ -34,7 +34,7 @@ class PsqlExecuteSettings(MutableMapping):
     __instance = None
     __settings = None
     __defaults = {}
-    __overrides = {}
+    __userspecified = {}
     postgres_variables = { 'host':'PGHOST', 'hostaddr':'PGHOSTADDR', 'port':'PGPORT', 
                               'database':'PGDATABASE', 'user':'PGUSER', 'password':'PGPASSWORD',
                               'passfile':'PGPASSFILE', 'service':'PGSERVICE', 'servicefile':'PGSERVICEFILE',
@@ -45,7 +45,8 @@ class PsqlExecuteSettings(MutableMapping):
                               'gsslib':'PGGSSLIB', 'connect_timeout':'PGCONNECT_TIMEOUT',
                               'client_encoding':'PGCLIENTENCODING', 'datestyle':'PGDATESTYLE',
                               'timezone':'PGTZ', 'geqo':'PGGEQO', 'sysconfdir':'PGSYSCONFDIR',
-                              'localedir':'PGLOCALEDIR', 'psql_path': '', 'prompt_for_password': '', 'files': '' }
+                              'localedir':'PGLOCALEDIR', 'psql_path': '', 'prompt_for_password': '',
+                              'warn_on_empty_password':'', 'files': '' }
 
     def __new__(cls, *args, **kwargs):
         if PsqlExecuteSettings.__instance is None:
@@ -61,7 +62,7 @@ class PsqlExecuteSettings(MutableMapping):
         self.__settings.add_on_change('reload', self.__reload)
 
     def __reload(self):
-        self.__defaults = {}
+        self.__defaults = self.__userspecified.copy()
 
     def __reload_settings(self, settings):
         self.__reload()
@@ -96,7 +97,7 @@ class PsqlExecuteSettings(MutableMapping):
 
     def __contains__(self, name):
         self.__validate_name(name)
-        if self.__keytransform__(name) in self.__overrides or self.__keytransform__(name) in self.__defaults:
+        if self.__keytransform__(name) in self.__defaults:
             return True
         else:
             value = self.__settings.get('default_'+name)
@@ -108,29 +109,59 @@ class PsqlExecuteSettings(MutableMapping):
         return name
 
     def __get(self, name):
-        if self.__keytransform__(name) in self.__overrides:
-            return self.__overrides[name]
-        elif self.__keytransform__(name) not in self.__defaults:
+        if self.__keytransform__(name) not in self.__defaults:
             value = self.__settings.get('default_'+name)
             if value:
                 self.__defaults[self.__keytransform__(name)] = value
         return self.__defaults[self.__keytransform__(name)]
 
     @classmethod
-    def set_override(cls, name, value):
-        cls.__validate_name(name)
-        cls.__overrides[name] = value
-
+    def save(cls):
+        for name in cls.__userspecified:
+            cls.__settings.set('default_' + name, cls.__userspecified[name])
+        save_settings('PostgreSQLExecute.sublime-settings')
+        cls.clear()
 
     @classmethod
-    def unset_override(cls, name):
+    def clear(cls):
+        cls.__userspecified = {}
+        cls.__reload()
+
+    @classmethod
+    def has_user_specified(cls):
+        return len(cls.__userspecified) > 0
+
+    @classmethod
+    def set_user_specified(cls, name, value):
         cls.__validate_name(name)
-        if name in cls.__overrides:
-            del cls.__overrides[name]
+        cls.__userspecified[name] = value
+
+    @classmethod
+    def unset_user_specified(cls, name):
+        cls.__validate_name(name)
+        if name in cls.__userspecified:
+            del cls.__userspecified[name]
+
+class PsqlConfigSaveCommand(TextCommand):
+    def description(self):
+        return 'Saves the current user-specified values to the defaults.'
+    def is_enabled(self):
+        return PsqlExecuteSettings.has_user_specified()
+    def run(self, edit, *args, **kwargs):
+        PsqlExecuteSettings.save()
+
+
+class PsqlConfigClearCommand(TextCommand):
+    def description(self):
+        return 'Clears the current user-specified values.'
+    def is_enabled(self):
+        return PsqlExecuteSettings.has_user_specified()
+    def run(self, edit, *args, **kwargs):
+        PsqlExecuteSettings.clear()
   
 class PsqlConfigSetCommand(TextCommand):  
     def description(self):
-        return 'Uses {"name": name, "value": value} to override the settings used for PostgreSQL commands and prompts if either missing.'
+        return 'Uses {"name": name, "value": value} to set the user-specified settings used for PostgreSQL commands. It prompts if either argument is missing.'
     
     def run(self, edit, *args, **kwargs): 
         self.__edit = edit
@@ -148,21 +179,21 @@ class PsqlConfigSetCommand(TextCommand):
     def __cancelled(self):
         status_message('PostgreSQL configuration variable setting cancelled.')
 
-    def __set_override(self, value):
-        PsqlExecuteSettings.set_override(self.config_name, value)
+    def __set_user_specified(self, value):
+        PsqlExecuteSettings.set_user_specified(self.config_name, value)
         status_message('PostgreSQL configuration variable \'' + self.config_name + '\' set.')
 
     def __set_name(self, name):
         self.config_name = name
 
         if 'value' not in self.kwargs:
-            self.window.show_input_panel('Enter ' + self.config_name + ':', '', self.__set_override, None, self.__cancelled)
+            self.window.show_input_panel('Enter ' + self.config_name + ':', '', self.__set_user_specified, None, self.__cancelled)
         else:
-            self.__set_override(self.kwargs['value'])
+            self.__set_user_specified(self.kwargs['value'])
 
 class PsqlConfigUnsetCommand(TextCommand):  
     def description(self):
-        return 'Uses {"name": name} to override the settings used for PostgreSQL commands and prompts if missing.'
+        return 'Uses {"name": name} to unset the user-specified settings used for PostgreSQL commands. It prompts if the argument is missing.'
     
     def run(self, edit, *args, **kwargs): 
         self.__edit = edit
@@ -180,11 +211,11 @@ class PsqlConfigUnsetCommand(TextCommand):
 
     def __set_name(self, name):
         self.config_name = name
-        PsqlExecuteSettings.unset_override(self.config_name)
+        PsqlExecuteSettings.unset_user_specified(self.config_name)
         status_message('PostgreSQL configuration variable \'' + self.config_name + '\' unset.')
 
   
-class PsqlExecuteCommand(TextCommand):  
+class PsqlCommand(TextCommand):  
     def description(self):
         return 'Executes PostgreSQL commands directly from the editor'
 
@@ -216,13 +247,13 @@ class PsqlExecuteCommand(TextCommand):
 
     def __run_with_password(self, password):
         if not password and self.__is_password_required():
-            if not ok_cancel_dialog('Proceed with empty password?', 'Proceed'):
+            if 'warn_on_empty_password' in self.settings and self.settings['warn_on_empty_password'] and not ok_cancel_dialog('Proceed with empty password?', 'Proceed'):
                 status_message('PostgreSQL query cancelled.')
                 return
         elif 'password' not in self.settings:
             self.settings['password'] = password
 
-        self.output_panel = self.window.create_output_panel('psql_execute')
+        self.output_panel = self.window.create_output_panel('psql')
         self.output_panel.set_scratch(True)
         self.output_panel.run_command('erase_view')
         self.output_panel.set_encoding(self.encoding)
@@ -343,11 +374,10 @@ class PsqlExecuteCommand(TextCommand):
             except BaseException as e:
                 errored = True
                 output_text = format_exc()
-                status_message('PostgreSQL query errored.')
 
             self.parent.settings.output_lock.acquire()
             self.parent.output_panel.run_command('append', {'characters': output_text})
-            self.parent.window.run_command('show_panel', {'panel': 'output.psql_execute'})
+            self.parent.window.run_command('show_panel', {'panel': 'output.psql'})
             self.parent.settings.output_lock.release()
 
         
