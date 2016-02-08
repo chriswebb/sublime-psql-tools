@@ -18,42 +18,81 @@ See: http://www.sublimetext.com/
 ## Setup
 Create a Main.sublime-menu file in your Packages/User folder. Then add items for each database you would like to query.
 
-For example to add a new database called "my_database" to the Database menu under System Preferences:
+### Add setting example
+
+To add a new database called "my_database" to the Database menu under System Preferences:
 
 ```js
-[
-    {
-        "id": "preferences",
+[{
+    "id": "preferences",
+    "children":
+    [{
+        "id": "package-settings",
         "children":
-        [
-            {
-                "id": "package-settings",
+        [{
+            "id": "psql-execute-settings",
+            "children":
+            [{
+                "id": "psql-execute-settings-database",
                 "children":
-                [
+                [{
+                    "caption": "my_database",
+                    "command": "psql_config_set", "args": 
                     {
-                        "id": "psql-execute-settings",
-                        "children":
-                        [
-                            {
-                                "id": "psql-execute-settings-database",
-                                "children":
-                                [
-                                    {
-                                        "caption": "my_database",
-                                        "command": "psql_config_set", "args": {
-                                            "name": "database",
-                                            "value": "my_database"
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }   
-                ]
-            }
-        ]
-    }
-]
+                        "name": "database",
+                        "value": "my_database"
+                    }
+                }]
+            }]
+        }]
+    }]
+}]
+```
+
+### Add new execute option with custom values example
+
+To add a new Execute method to the non-default hostname "production.mysite" to the Database menu under System Preferences:
+
+If you would like to add new items to the Tools menu with non-default options. 
+
+```js
+[{
+    "id": "tools",
+    "children":
+    [{
+        "id":"psql-execute-tools",
+        "children":
+        [{
+            "caption":"Execute (Production)",
+            "command":"psql_execute",
+            "args": { "host": "production.mysite" }
+        }]
+    }]
+},
+{
+    "id": "preferences",
+    "children":
+    [{
+        "id": "package-settings",
+        "children":
+        [{
+            "id": "psql-execute-settings",
+            "children":
+            [{
+                "id": "psql-execute-settings-database",
+                "children":
+                [{
+                    "caption": "my_database",
+                    "command": "psql_config_set", "args": 
+                    {
+                        "name": "database",
+                        "value": "my_database"
+                    }
+                }]
+            }]
+        }]
+    }]
+}]
 ```
 
 then browse to Main > Preferences > Package Settings > PSQL Execute > Database and select your newly added database.
