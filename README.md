@@ -1,4 +1,5 @@
 # PostgreSQL Sublime Text Plugin
+
 ***[Sublime Text 3+](http://www.sublimetext.com/) Package. Install via an updated version of  [Package Control 2+](https://sublime.wbond.net/installation). Just &#42;&#42;DON'T&#42;&#42; install manually.***
 
 ## Installation
@@ -9,12 +10,14 @@
 4. Select **PostgreSQL**.
 
 ## Description 
+
 A plugin for Sublime Text 3 that allows the execution of PSQL commands directly from the editor.
 
 See: http://www.sublimetext.com/
 
 
 ## Setup
+
 Create a Main.sublime-menu file in your Packages/User folder. Then add items for each database you would like to query.
 
 ### Add setting example
@@ -155,18 +158,31 @@ Values used when calling psql. To overwrite default values select Preferences > 
 
 #### PostgreSQL Settings
 
-
 The list of supported settings is located [here](http://www.postgresql.org/docs/current/static/libpq-connect.html#LIBPQ-PARAMKEYWORDS) on the [PostgreSQL Documention site](http://www.postgresql.org/docs/current/static/).
 
 
 ## Contributing
+
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
-## Credits
-This README template was pulled from https://gist.github.com/zenorocha/4526327
+
+## Roadmap
+
+Features planned for the future:
+
+- Project style schema management
+- Data manipulation
+- Better support for the results
+- Better error reporting
+
+## Disclaimer
+
+PostgreSQL is a trademark of the PostgreSQL Global Development Group. See [here](https://wiki.postgresql.org/wiki/Trademark_Policy) for more details. I am not affiliated with this group in any capacity.
+
 ## License
+
 MIT License. See LICENSE file.
