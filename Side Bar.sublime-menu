@@ -1,3 +1,4 @@
 [
-	{ "caption": "Execute PostgreSQL", "command": "psql", "args": {"files": []} }
+	{ "caption": "Run PostgreSQL", "command": "psql", "args": {"files": []} },
+	{ "caption": "Run PostgreSQL - New", "command": "psql", "args": {"files": [], "output_to_newfile": "True"} }
 ]
