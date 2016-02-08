@@ -103,7 +103,7 @@ Next click Tools > PostgreSQL > Execute (Other Database) to run against the othe
 
 Commands provided by this plugin:
 
-- `psql` : 'args' : `Settings`
+- `psql` : `args` : `Settings`
 
         Execute PostgreSQL query with data supplied from one of the following three methods:
 
@@ -121,11 +121,11 @@ Commands provided by this plugin:
 
 - `psql_config_clear` : 
 
-        Clear all user overrides from the settings to the defaults.
+        Clear all user overrides back to default configuration settings.
 
 - `psql_config_save` :
 
-        Save the current overrides to the default values stored for the user.
+        Save the current overrides to the default configuration settings.
 
 
 ### Settings
