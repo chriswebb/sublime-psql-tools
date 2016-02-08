@@ -107,6 +107,7 @@
                             { "caption": "-"},
                             {
                                 "caption": "Database",
+                                "id": "psql-execute-settings-database",
                                 "children": 
                                 [
                                     {
@@ -129,6 +130,7 @@
                             },
                             {
                                 "caption": "Host",
+                                "id": "psql-execute-settings-host",
                                 "children": 
                                 [
                                     {
@@ -151,6 +153,7 @@
                             },
                             {
                                 "caption": "Port",
+                                "id": "psql-execute-settings-port",
                                 "children": 
                                 [
                                     {
@@ -179,6 +182,7 @@
                             },
                             {
                                 "caption": "User",
+                                "id": "psql-execute-settings-user",
                                 "children": 
                                 [
                                     {
@@ -201,6 +205,7 @@
                             },
                             {
                                 "caption": "Password",
+                                "id": "psql-execute-settings-password",
                                 "children": 
                                 [
                                     {
@@ -212,6 +217,81 @@
                                         "caption": "Unset (default)",
                                         "command": "psql_config_unset",
                                         "args": { "name": "password" }
+                                    },
+                                    { "caption": "-"}
+                                ]
+                            },
+                            { "caption": "-" },
+                            {
+                                "caption": "RequireSSL",
+                                "id": "psql-execute-settings-requiressl",
+                                "children": 
+                                [
+                                    {
+                                        "caption": "Set",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "requiressl" }
+                                    },
+                                    {
+                                        "caption": "Unset (default)",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "requiressl" }
+                                    },
+                                    { "caption": "-"},
+                                    {
+                                        "caption": "True",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "requiressl", "value": "true" }
+                                    },
+                                    {
+                                        "caption": "False",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "requiressl", "value": "false" }
+                                    },
+                                    { "caption": "-"}
+                                ]
+                            },
+                            { "caption": "-" },
+                            {
+                                "caption": "SSL Mode",
+                                "id": "psql-execute-settings-sslmode",
+                                "children": 
+                                [
+                                    {
+                                        "caption": "Set",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "sslmode" }
+                                    },
+                                    {
+                                        "caption": "Unset (default)",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "sslmode" }
+                                    },
+                                    { "caption": "-"},
+                                    {
+                                        "caption": "Allow",
+                                        "command": "psql_config_set",
+                                        "args": { "name": "sslmode", "value": "allow" }
+                                    },
+                                    {
+                                        "caption": "Disable",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "sslmode", "value": "disable" }
+                                    },
+                                    {
+                                        "caption": "Prefer",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "sslmode", "value": "prefer" }
+                                    },
+                                    {
+                                        "caption": "Verify CA",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "sslmode", "value": "verify-ca" }
+                                    },
+                                    {
+                                        "caption": "Verify Full",
+                                        "command": "psql_config_unset",
+                                        "args": { "name": "sslmode", "value": "verify-full" }
                                     },
                                     { "caption": "-"}
                                 ]
