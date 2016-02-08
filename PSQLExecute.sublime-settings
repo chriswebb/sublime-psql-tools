@@ -1,7 +1,6 @@
 {
     // default path for psql executable
-    "psql_path": "/usr/bin/psql",
-
+    "default_psql_path": "/usr/bin/psql",
     // default database to query
     "default_database": "postgres",
     // default host of psql server
@@ -9,5 +8,11 @@
     // default port of psql server
     "default_port": "5432",
     // default user to connect to psql server
-    "default_user": "postgres"
+    "default_user": "postgres",
+    // default password for default user
+    "default_password": "",
+    // prompt for empty passwords
+    "default_prompt_for_password": "True",
+    // default app name
+    "default_appname": "SublimeText.PSQLExecute"
 }
