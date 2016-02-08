@@ -18,5 +18,5 @@
     // warn after prompted wth empty password
     "default_output_to_newfile": "False",
     // default app name
-    "default_appname": "SublimeText.PostgreSQL"
+    "default_application_name": "SublimeText.PostgreSQL"
 }
