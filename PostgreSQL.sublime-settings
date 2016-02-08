@@ -13,8 +13,10 @@
     "default_password": "",
     // prompt for empty passwords
     "default_prompt_for_password": "True",
-    // prompt for empty passwords
+    // warn after prompted wth empty password
     "default_warn_on_empty_password": "True",
+    // warn after prompted wth empty password
+    "default_output_to_newfile": "False",
     // default app name
     "default_appname": "SublimeText.PostgreSQL"
 }

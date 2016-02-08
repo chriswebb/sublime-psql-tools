@@ -30,7 +30,7 @@ from os.path import isfile, expanduser, split
 from collections import MutableMapping 
 from traceback import format_exc
 
-class PsqlExecuteSettings(MutableMapping):
+class PostgreSQLSettings(MutableMapping):
     __instance = None
     __settings = None
     __defaults = {}
@@ -47,7 +47,7 @@ class PsqlExecuteSettings(MutableMapping):
                               'client_encoding':'PGCLIENTENCODING', 'datestyle':'PGDATESTYLE',
                               'timezone':'PGTZ', 'geqo':'PGGEQO', 'sysconfdir':'PGSYSCONFDIR',
                               'localedir':'PGLOCALEDIR', 'psql_path': '', 'prompt_for_password': '',
-                              'warn_on_empty_password':'', 'files': '' }
+                              'warn_on_empty_password':'', 'output_to_newfile':'', 'files': '' }
 
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
@@ -156,9 +156,9 @@ class PsqlConfigSaveCommand(TextCommand):
     def description(self):
         return 'Saves the current user-specified values to the defaults.'
     def is_enabled(self):
-        return PsqlExecuteSettings.has_user_specified()
+        return PostgreSQLSettings.has_user_specified()
     def run(self, edit, *args, **kwargs):
-        PsqlExecuteSettings.save()
+        PostgreSQLSettings.save()
         status_message('PostgreSQL configuration saved to defaults.')
 
 
@@ -166,9 +166,9 @@ class PsqlConfigClearCommand(TextCommand):
     def description(self):
         return 'Clears the current user-specified values.'
     def is_enabled(self):
-        return PsqlExecuteSettings.has_user_specified()
+        return PostgreSQLSettings.has_user_specified()
     def run(self, edit, *args, **kwargs):
-        PsqlExecuteSettings.clear()
+        PostgreSQLSettings.clear()
         status_message('PostgreSQL configuration cleared to defaults.')
   
 class PsqlConfigSetCommand(TextCommand):  
@@ -192,7 +192,7 @@ class PsqlConfigSetCommand(TextCommand):
         status_message('PostgreSQL configuration variable setting cancelled.')
 
     def __set_user_specified(self, value):
-        PsqlExecuteSettings.set_user_specified(self.config_name, value)
+        PostgreSQLSettings.set_user_specified(self.config_name, value)
         status_message('PostgreSQL configuration variable \'' + self.config_name + '\' set.')
 
     def __set_name(self, name):
@@ -223,7 +223,7 @@ class PsqlConfigUnsetCommand(TextCommand):
 
     def __set_name(self, name):
         self.config_name = name
-        PsqlExecuteSettings.unset_user_specified(self.config_name)
+        PostgreSQLSettings.unset_user_specified(self.config_name)
         status_message('PostgreSQL configuration variable \'' + self.config_name + '\' unset.')
 
   
@@ -233,7 +233,7 @@ class PsqlCommand(TextCommand):
 
     def run(self, edit, *args, **kwargs):  
         self.edit = edit
-        self.settings = PsqlExecuteSettings(kwargs)
+        self.settings = PostgreSQLSettings(kwargs)
         self.encoding = self.view.encoding()
         self.window =  self.view.window()
 
@@ -254,6 +254,9 @@ class PsqlCommand(TextCommand):
     def __cancelled(self):
         self.__run_with_password(None)
 
+    def is_output_to_newfile(self):
+        return 'output_to_newfile' in self.settings and self.settings['output_to_newfile'] 
+
     def __is_password_required(self):
         return 'prompt_for_password' in self.settings and self.settings['prompt_for_password'] and 'passfile' not in self.settings and 'service' not in self.settings and not isfile(expanduser('~/.pgpass'))
 
@@ -265,10 +268,11 @@ class PsqlCommand(TextCommand):
         elif 'password' not in self.settings:
             self.settings['password'] = password
 
-        self.output_panel = self.window.create_output_panel('psql')
-        self.output_panel.set_scratch(True)
-        self.output_panel.run_command('erase_view')
-        self.output_panel.set_encoding(self.encoding)
+        if not self.is_output_to_newfile():
+            self.output_panel = self.window.create_output_panel('psql')
+            self.output_panel.set_scratch(True)
+            self.output_panel.run_command('erase_view')
+            self.output_panel.set_encoding(self.encoding)
 
         status_message('PostgreSQL query executing...')
         thread_infos = []
@@ -387,9 +391,17 @@ class PsqlCommand(TextCommand):
                 errored = True
                 output_text = format_exc()
 
-            self.parent.settings.output_lock.acquire()
-            self.parent.output_panel.run_command('append', {'characters': output_text})
-            self.parent.window.run_command('show_panel', {'panel': 'output.psql'})
-            self.parent.settings.output_lock.release()
+
+            if self.parent.is_output_to_newfile():
+                view = self.parent.window.new_file()
+                view.set_scratch(True)
+                view.set_encoding(self.parent.encoding)
+                view.run_command('append', {'characters': output_text})
+                self.parent.window.focus_view(view)
+            else:
+                self.parent.settings.output_lock.acquire()
+                self.parent.output_panel.run_command('append', {'characters': output_text})
+                self.parent.window.run_command('show_panel', {'panel': 'output.psql'})
+                self.parent.settings.output_lock.release()
 
         

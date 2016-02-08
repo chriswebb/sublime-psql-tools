@@ -144,6 +144,10 @@ Values used when calling psql. To overwrite default values select Preferences > 
 
         Display a warning if password is not entered after being prompted.
 
+ - `output_to_newfile` : `False`
+
+        Creates a new file for each file or region which runs when the psql command is called.
+
  - `files` : `[]`
 
         A list of files to run the query against. 
