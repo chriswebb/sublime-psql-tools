@@ -39,7 +39,7 @@ class PostgreSQLSettings(MutableMapping):
     postgres_variables = { 'host':'PGHOST', 'hostaddr':'PGHOSTADDR', 'port':'PGPORT', 
                               'database':'PGDATABASE', 'user':'PGUSER', 'password':'PGPASSWORD',
                               'passfile':'PGPASSFILE', 'service':'PGSERVICE', 'servicefile':'PGSERVICEFILE',
-                              'kerberos_realm':'PGREALM', 'options':'PGOPTIONS', 'appname':'PGAPPNAME',
+                              'kerberos_realm':'PGREALM', 'options':'PGOPTIONS', 'application_name':'PGAPPNAME',
                               'sslmode':'PGSSLMODE', 'requiressl':'PGREQUIRESSL', 'sslcompression':'PGSSLCOMPRESSION',
                               'sslcert':'PGSSLCERT', 'sslkey':'PGSSLKEY', 'sslrootcert':'PGSSLROOTCERT', 
                               'sslcrl':'PGSSLCRL', 'requirepeer':'PGREQUIREPEER', 'krbsrvname':'PGKRBSRVNAME',
