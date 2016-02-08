@@ -56,7 +56,7 @@ class PsqlExecuteSettings(MutableMapping):
 
     def __init__(self, *args, **kwargs):
         self.output_lock = Lock()
-        self.__settings = load_settings('PSQLExecute.sublime-settings')
+        self.__settings = load_settings('PostgreSQLExecute.sublime-settings')
         self.__settings.clear_on_change('reload')
         self.__settings.add_on_change('reload', self.__reload)
 
