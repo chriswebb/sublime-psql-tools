@@ -11,7 +11,7 @@
 
 ## Description 
 
-A plugin for Sublime Text 3 that allows the execution of PSQL commands directly from the editor.
+A plugin for Sublime Text that allows the execution of PostgreSQL commands directly from the editor.
 
 See: http://www.sublimetext.com/
 
