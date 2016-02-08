@@ -162,35 +162,35 @@ PostgreSQL settings are based off of environmental variables. The list of suppor
 
 The following is a mapping of internal settings names to PostgreSQL Environment Variables:
 
-- `host`: `PGHOST` 
-- `hostaddr`: `PGHOSTADDR` 
-- `port`: `PGPORT` 
-- `dbname`: `PGDATABASE`
-- `user`: `PGUSER` 
-- `password`: `PGPASSWORD`
-- `passfile`: `PGPASSFILE` 
-- `service`: `PGSERVICE` 
-- `servicefile`: `PGSERVICEFILE`
-- `kerberos_realm`: `PGREALM` 
-- `options`: `PGOPTIONS` 
-- `application_name`: `PGAPPNAME`
-- `sslmode`: `PGSSLMODE` 
-- `requiressl`: `PGREQUIRESSL` 
-- `sslcompression`: `PGSSLCOMPRESSION`
-- `sslcert`: `PGSSLCERT` 
-- `sslkey`: `PGSSLKEY` 
-- `sslrootcert`: `PGSSLROOTCERT` 
-- `sslcrl`: `PGSSLCRL` 
-- `requirepeer`: `PGREQUIREPEER` 
-- `krbsrvname`: `PGKRBSRVNAME`
-- `gsslib`: `PGGSSLIB` 
-- `connect_timeout`: `PGCONNECT_TIMEOUT`
-- `client_encoding`: `PGCLIENTENCODING` 
-- `datestyle`: `PGDATESTYLE`
-- `timezone`: `PGTZ` 
-- `geqo`: `PGGEQO` 
-- `sysconfdir`: `PGSYSCONFDIR`
-- `localedir`: `PGLOCALEDIR`
+- `PGHOST`: `host` 
+- `PGHOSTADDR`: `hostaddr` 
+- `PGPORT`: `port` 
+- `PGDATABASE`: `dbname`
+- `PGUSER`: `user` 
+- `PGPASSWORD`: `password`
+- `PGPASSFILE`: `passfile` 
+- `PGSERVICE`: `service` 
+- `PGSERVICEFILE`: `servicefile`
+- `PGREALM`: `kerberos_realm` 
+- `PGOPTIONS`: `options` 
+- `PGAPPNAME`: `application_name`
+- `PGSSLMODE`: `sslmode` 
+- `PGREQUIRESSL`: `requiressl` 
+- `PGSSLCOMPRESSION`: `sslcompression`
+- `PGSSLCERT`: `sslcert` 
+- `PGSSLKEY`: `sslkey` 
+- `PGSSLROOTCERT`: `sslrootcert` 
+- `PGSSLCRL`: `sslcrl` 
+- `PGREQUIREPEER`: `requirepeer` 
+- `PGKRBSRVNAME`: `krbsrvname`
+- `PGGSSLIB`: `gsslib` 
+- `PGCONNECT_TIMEOUT`: `connect_timeout`
+- `PGCLIENTENCODING`: `client_encoding` 
+- `PGDATESTYLE`: `datestyle`
+- `PGTZ`: `timezone` 
+- `PGGEQO`: `geqo` 
+- `PGSYSCONFDIR`: `sysconfdir`
+- `PGLOCALEDIR`: `localedir`
 
 
 ## Contributing
