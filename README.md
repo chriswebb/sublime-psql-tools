@@ -104,7 +104,7 @@ Commands provided by this plugin:
 - `psql` : `Settings`
 
         Execute PostgreSQL query with data supplied from one of the following three methods:
-        
+
         - Files specified in the 'files' setting
         - Selected text of the current view
         - If no text selected, all of the text in the current view
@@ -132,20 +132,20 @@ Values used when calling psql. To overwrite default values select Preferences > 
 
 #### Plugin Settings 
 
- - `psql_path` : /usr/bin/psql
+ - `psql_path` : `/usr/bin/psql`
 
         Path to your desired psql executable in the file system.
 
- - `prompt_for_password` : True
+ - `prompt_for_password` : `True`
 
         Prompt for input if password is not supplied for the connection through configuration. 
         Does not prompt if a password file exists (e.g. ~/.pgpass or passfile) or a service has been defined. 
 
- - `warn_on_empty_password` : True
+ - `warn_on_empty_password` : `True`
 
         Display a warning if password is not entered after being prompted.
 
- - `files` : []
+ - `files` : `[]`
 
         A list of files to run the query against. 
 
