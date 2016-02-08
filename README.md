@@ -1,4 +1,4 @@
-# PSQLExecute
+# PostgreSQL Execute
 ***[Sublime Text 3+](http://www.sublimetext.com/) Package. Install via an updated version of  [Package Control 2+](https://sublime.wbond.net/installation). Just &#42;&#42;DON'T&#42;&#42; install manually.***
 
 ## Installation
@@ -7,7 +7,7 @@
 2. In Sublime Text, press <kbd>Ctrl+Shift+P</kbd> (Win, Linux) or <kbd>⌘⇧p</kbd> (OS X) to open the command palette.
 3. Choose `Package Control: Select Repository`.
 4. Choose `Package Control: Install Package`.
-5. Select **PSQLExecute**.
+5. Select **PostgreSQL Execute**.
 
 ## Description 
 A plugin for Sublime Text 3 that allows the execution of PSQL commands directly from the editor.
@@ -18,32 +18,37 @@ See: http://www.sublimetext.com/
 ## Setup
 Create a Main.sublime-menu file in your Packages/User folder. Then add items for each database you would like to query.
 
-For example to connect to two postgres databases at separate ports 5432 and 6432,  create two items:
+For example to add a new database called "my_database" to the Database menu under System Preferences:
 
 ```js
 [
     {
-        "caption": "Tools",
-        "mnemonic": "t",
-        "id": "tools",
+        "id": "preferences",
         "children":
         [
             {
-                "caption": "PSQL Execute",
-                "mnemonic": "f",
-                "id": "psql",
+                "id": "package-settings",
                 "children":
                 [
                     {
-                        "command": "psql_execute",
-                        "args": {"host":"localhost", "port": "5432", "database": "postgres", "user":"postgres"},
-                        "caption": "Postgres"
-                    },
-                    {
-                        "command": "psql_execute",
-                        "args": {"host":"localhost", "port": "6432", "database": "postgres", "user":"postgres"},
-                        "caption": "Postgres 6432"
-                    }
+                        "id": "psql-execute-settings",
+                        "children":
+                        [
+                            {
+                                "id": "psql-execute-settings-database",
+                                "children":
+                                [
+                                    {
+                                        "caption": "my_database",
+                                        "command": "psql_config_set", "args": {
+                                            "name": "database",
+                                            "value": "my_database"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }   
                 ]
             }
         ]
@@ -51,7 +56,7 @@ For example to connect to two postgres databases at separate ports 5432 and 6432
 ]
 ```
 
-then browse to Tools > PSQL Execute and select the database you would like to run your query against.
+then browse to Main > Preferences > Package Settings > PSQL Execute > Database and select your newly added database.
 
 ## Contributing
 1. Fork it!
