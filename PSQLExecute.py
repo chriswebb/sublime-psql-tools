@@ -340,15 +340,6 @@ class PsqlExecuteCommand(TextCommand):
                 output_text = stdout.decode(self.parent.encoding)
                 retcode = psqlprocess.poll()
 
-                if retcode == 3:
-                    print('Script error Return code: ' + str(retcode))
-                if retcode == 0:
-                    print('Script success Return code: ' + str(retcode))
-                if retcode == 1:
-                    print('Script fatal client error Return code: ' + str(retcode))
-                if retcode == 2:
-                    print('Script fatal server error Return code: ' + str(retcode))
-
             except BaseException as e:
                 errored = True
                 output_text = format_exc()
