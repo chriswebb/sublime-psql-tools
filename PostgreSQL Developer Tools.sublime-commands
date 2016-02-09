@@ -1,0 +1,161 @@
+[
+    {
+        "caption": "Preferences: PostgreSQL Developer Tools – Default",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/PostgreSQL Developer Tools/PostgreSQL Developer Tools.sublime-settings"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Developer Tools – User",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/User/PostgreSQL Developer Tools.sublime-settings"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Developer Tools Key Bindings – Default",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/PostgreSQL Developer Tools/Default (Windows).sublime-keymap",
+            "platform": "Windows"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Developer Tools Key Bindings – Default",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/PostgreSQL Developer Tools/Default (OSX).sublime-keymap",
+            "platform": "OSX"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Developer Tools Key Bindings – Default",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/PostgreSQL Developer Tools/Default (Linux).sublime-keymap",
+            "platform": "Linux"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Developer Tools Key Bindings – User",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/User/Default (Windows).sublime-keymap",
+            "platform": "Windows"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Developer Tools Key Bindings – User",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/User/Default (OSX).sublime-keymap",
+            "platform": "OSX"
+        }
+    },
+    {
+        "caption": "Preferences: PostgreSQL Developer Tools Key Bindings – User",
+        "command": "open_file",
+        "args": {
+            "file": "${packages}/User/Default (Linux).sublime-keymap",
+            "platform": "Linux"
+        }
+    },
+    {
+        "caption": "Create a new PostgreSQL connection session from current settings.",
+        "command": "psql_conn"
+    },
+    {
+        "caption": "Create a new PostgreSQL connection session from default settings.",
+        "command": "psql_conn_new"
+    },
+    {
+        "caption": "Update PostgreSQL connection session with database 'postgres' and user 'postgres'.",
+        "command": "psql_config", "args": {"database": "postgres", "user": "postgres"}
+    },
+    {
+        "caption": "Execute PostgreSQL query against default settings",
+        "command": "psql"
+    },
+    {
+        "caption": "Execute PostgreSQL query against postgres database",
+        "command": "psql", "args":
+        {
+            "database": "postgres"
+        }
+    },
+    {
+        "caption": "Execute PostgreSQL query against 'postgres' database with 'postgres' user",
+        "command": "psql", "args":
+        {
+            "database": "postgres",
+            "user": "postgres"
+        }
+    },
+    {
+        "caption": "Clear variables in PostgreSQL connection configuration",
+        "command": "psql_config_clear"
+    },
+    {
+        "caption": "Save variables in PostgreSQL connection configuration",
+        "command": "psql_config_save"
+    },
+    {
+        "caption": "Set variable in PostgreSQL connection configuration",
+        "command": "psql_config_set"
+    },
+    {
+        "caption": "Set database in PostgreSQL connection configuration",
+        "command": "psql_config_set",
+        "args": { "name": "database" }
+    },
+    {
+        "caption": "Set host in PostgreSQL connection configuration",
+        "command": "psql_config_set",
+        "args": { "name": "host" }
+    },
+    {
+        "caption": "Set port in PostgreSQL connection configuration",
+        "command": "psql_config_set",
+        "args": { "name": "port" }
+    },
+    {
+        "caption": "Set user in PostgreSQL connection configuration",
+        "command": "psql_config_set",
+        "args": { "name": "user" }
+    },
+    {
+        "caption": "Set password in PostgreSQL connection configuration",
+        "command": "psql_config_set",
+        "args": { "name": "password" }
+    },
+    {
+        "caption": "Unset variable in PostgreSQL connection configuration",
+        "command": "psql_config_unset"
+    },
+    {
+        "caption": "Unset database in PostgreSQL connection configuration",
+        "command": "psql_config_set",
+        "args": { "name": "database" }
+    },
+    {
+        "caption": "Unset host in PostgreSQL connection configuration",
+        "command": "psql_config_unset",
+        "args": { "name": "host" }
+    },
+    {
+        "caption": "Unset port in PostgreSQL connection configuration",
+        "command": "psql_config_unset",
+        "args": { "name": "port" }
+    },
+    {
+        "caption": "Unset user in PostgreSQL connection configuration",
+        "command": "psql_config_unset",
+        "args": { "name": "user" }
+    },
+    {
+        "caption": "Unset password in PostgreSQL connection configuration",
+        "command": "psql_config_unset",
+        "args": { "name": "password" }
+    }
+]

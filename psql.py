@@ -20,64 +20,125 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from sublime import save_settings, load_settings, status_message, ok_cancel_dialog, Region, active_window
-from sublime_plugin import TextCommand
+from sublime import save_settings, load_settings, status_message, ok_cancel_dialog, Region, active_window, set_timeout
+from sublime_plugin import TextCommand, WindowCommand, EventListener
+from collections import MutableMapping 
+from abc import ABCMeta
 from threading import Thread, Lock
 from time import time
 from subprocess import Popen, PIPE, STDOUT
 from os import environ
 from os.path import isfile, expanduser, split
-from collections import MutableMapping 
 from traceback import format_exc
 
-class PostgreSQLSettings(MutableMapping):
-    __instance = None
-    __settings = None
-    __defaults = {}
-    __settings_name = 'PostgreSQL.sublime-settings'
-    __userspecified = {}
-    postgres_variables = { 'host':'PGHOST', 'hostaddr':'PGHOSTADDR', 'port':'PGPORT', 
-                              'database':'PGDATABASE', 'user':'PGUSER', 'password':'PGPASSWORD',
-                              'passfile':'PGPASSFILE', 'service':'PGSERVICE', 'servicefile':'PGSERVICEFILE',
-                              'kerberos_realm':'PGREALM', 'options':'PGOPTIONS', 'application_name':'PGAPPNAME',
-                              'sslmode':'PGSSLMODE', 'requiressl':'PGREQUIRESSL', 'sslcompression':'PGSSLCOMPRESSION',
-                              'sslcert':'PGSSLCERT', 'sslkey':'PGSSLKEY', 'sslrootcert':'PGSSLROOTCERT', 
-                              'sslcrl':'PGSSLCRL', 'requirepeer':'PGREQUIREPEER', 'krbsrvname':'PGKRBSRVNAME',
-                              'gsslib':'PGGSSLIB', 'connect_timeout':'PGCONNECT_TIMEOUT',
-                              'client_encoding':'PGCLIENTENCODING', 'datestyle':'PGDATESTYLE',
-                              'timezone':'PGTZ', 'geqo':'PGGEQO', 'sysconfdir':'PGSYSCONFDIR',
-                              'localedir':'PGLOCALEDIR', 'psql_path': '', 'prompt_for_password': '',
-                              'warn_on_empty_password':'', 'output_to_newfile':'', 'files': '' }
+def set_status(msg):
+    set_timeout(lambda:status_message(msg))
 
-    def __new__(cls, *args, **kwargs):
-        if cls.__instance is None:
-            cls.__instance = MutableMapping.__new__(cls)
-            cls.__get_settings()
-        cls.__instance.__reload_settings(dict(*args, **kwargs))
-        return cls.__instance
+class PsqlBaseTextCommand(TextCommand, metaclass=ABCMeta):  
+
+    __settings = None
+    __window = None
+    @property
+    def window(self):
+        if self.__window is None:
+            self.__window = self.view.window()
+            if self.__window is None:
+                self.__window = active_window()
+        return self.__window
+
+    @property
+    def settings(self):
+        if self.__settings is None:
+            self.__settings = PsqlSettings(window=self.window)
+        return self.__settings
+
+    @settings.setter
+    def function(self, *args, **kwargs):
+        self.__settings.update(dict(*args, **kwargs))
+
+class PsqlBaseWindowCommand(WindowCommand, metaclass=ABCMeta):  
+
+    __settings = None
+    @property
+    def settings(self):
+        if self.__settings is None:
+            self.__settings = PsqlSettings(window=self.window)
+        return self.__settings
+
+    @settings.setter
+    def function(self, *args, **kwargs):
+        self.__settings.update(dict(*args, **kwargs))
+
+class PsqlEventListener(EventListener):  
+    def post_window_command(window, command_name, args):
+        if command_name == 'close_window':
+            PsqlSettings.window_closed(window)
+
+
+
+class PsqlSettings(MutableMapping):
+    __settings_name = 'PostgreSQL Developer Tools.sublime-settings'
+    __settings = None
+    __windows = {}
+
+    __postgres_variables = { 
+        'host':'PGHOST', 'hostaddr':'PGHOSTADDR', 'port':'PGPORT', 
+        'database':'PGDATABASE', 'user':'PGUSER', 'password':'PGPASSWORD',
+        'passfile':'PGPASSFILE', 'service':'PGSERVICE', 'servicefile':'PGSERVICEFILE',
+        'kerberos_realm':'PGREALM', 'options':'PGOPTIONS', 'application_name':'PGAPPNAME',
+        'sslmode':'PGSSLMODE', 'requiressl':'PGREQUIRESSL', 'sslcompression':'PGSSLCOMPRESSION',
+        'sslcert':'PGSSLCERT', 'sslkey':'PGSSLKEY', 'sslrootcert':'PGSSLROOTCERT', 
+        'sslcrl':'PGSSLCRL', 'requirepeer':'PGREQUIREPEER', 'krbsrvname':'PGKRBSRVNAME',
+        'gsslib':'PGGSSLIB', 'connect_timeout':'PGCONNECT_TIMEOUT',
+        'client_encoding':'PGCLIENTENCODING', 'datestyle':'PGDATESTYLE',
+        'timezone':'PGTZ', 'geqo':'PGGEQO', 'sysconfdir':'PGSYSCONFDIR',
+        'localedir':'PGLOCALEDIR', 'psql_path': '', 'prompt_for_password': '',
+        'warn_on_empty_password':'', 'output_to_newfile':'', 'files': '' 
+    }
+
+    @property
+    @staticmethod
+    def postgres_variables(cls):
+        return __postgres_variables.copy()
+
+    def __new__(cls, window=None, *args, **kwargs):
+        if window is not None:
+            if window.id() not in cls.__windows:
+                cls.__windows[window.id()] = MutableMapping.__new__(cls, *args, **kwargs)
+            return cls.__windows[window.id()]
+        return MutableMapping.__new__(cls, *args, **kwargs)
 
     def __init__(self, *args, **kwargs):
+        self.__defaults = {}
+        self.__userspecified = {}
         self.output_lock = Lock()
+        self.__reload()
+        kwargs.pop('window', None)
+        self.update(dict(*args, **kwargs))
+
+
+    @classmethod
+    def window_closed(self, window):
+        if window.id() in self.__windows:
+            del self.__windows[window.id()]
 
     @classmethod
     def __get_settings(cls):
         if cls.__settings is None:
             cls.__settings = load_settings(cls.__settings_name)
             cls.__settings.clear_on_change('reload')
-            cls.__settings.add_on_change('reload', cls.__reload)
+            cls.__settings.add_on_change('reload', cls.__reload_all_windows)
         return cls.__settings
 
     @classmethod
-    def __reload(cls):
-        cls.__defaults = cls.__userspecified.copy()
+    def __reload_all_windows(cls):
+        for window in cls.__windows:
+            cls.__windows[window].__reload()
 
-    def __reload_settings(self, settings):
-        self.__reload()
-        self.update(settings)
 
     @classmethod
     def __try_validate_name(cls, name):
-        return name in cls.postgres_variables
+        return name in cls.__postgres_variables
 
     @classmethod
     def __validate_name(cls, name):
@@ -122,123 +183,43 @@ class PostgreSQLSettings(MutableMapping):
                 self.__defaults[self.__keytransform__(name)] = value
         return self.__defaults[self.__keytransform__(name)]
 
-    @classmethod
-    def save(cls):
+    def __reload(self):
+        self.__defaults = self.__userspecified.copy()
+
+    def save(self):
         updates = False
-        for name in cls.__userspecified:
+        for name in self.__userspecified:
             updates = True
-            cls.__get_settings().set('default_' + name, cls.__userspecified[name])
+            self.__get_settings().set('default_' + name, self.__userspecified[name])
         if updates:
-            save_settings(cls.__settings_name)
-            cls.clear()
+            save_settings(self.__settings_name)
+            self.clear()
 
-    @classmethod
-    def clear(cls):
-        cls.__userspecified = {}
-        cls.__reload()
+    def clear(self):
+        self.__userspecified = {}
+        self.__reload()
 
-    @classmethod
-    def has_user_specified(cls):
-        return len(cls.__userspecified) > 0
+    def has_user_specified(self):
+        return len(self.__userspecified) > 0
 
-    @classmethod
-    def set_user_specified(cls, name, value):
-        cls.__validate_name(name)
-        cls.__userspecified[name] = value
+    def set_user_specified(self, name, value):
+        self.__validate_name(name)
+        self.__userspecified[name] = value
 
-    @classmethod
-    def unset_user_specified(cls, name):
-        cls.__validate_name(name)
-        if name in cls.__userspecified:
-            del cls.__userspecified[name]
+    def unset_user_specified(self, name):
+        self.__validate_name(name)
+        if name in self.__userspecified:
+            del self.__userspecified[name]
 
-class PsqlConfigSaveCommand(TextCommand):
-    def description(self):
-        return 'Saves the current user-specified values to the defaults.'
-    def is_enabled(self):
-        return PostgreSQLSettings.has_user_specified()
-    def run(self, edit, *args, **kwargs):
-        PostgreSQLSettings.save()
-        status_message('PostgreSQL configuration saved to defaults.')
-
-
-class PsqlConfigClearCommand(TextCommand):
-    def description(self):
-        return 'Clears the current user-specified values.'
-    def is_enabled(self):
-        return PostgreSQLSettings.has_user_specified()
-    def run(self, edit, *args, **kwargs):
-        PostgreSQLSettings.clear()
-        status_message('PostgreSQL configuration cleared to defaults.')
-  
-class PsqlConfigSetCommand(TextCommand):  
-    def description(self):
-        return 'Uses {"name": name, "value": value} to set the user-specified settings used for PostgreSQL commands. It prompts if either argument is missing.'
-    
-    def run(self, edit, *args, **kwargs): 
-        self.__edit = edit
-        self.kwargs = kwargs
-        self.window =  self.view.window()
-
-        if self.window is None:
-            self.window = active_window()
-
-        if 'name' not in self.kwargs:
-            self.window.show_input_panel('Enter PostgreSQL configuration variable name:', '', self.__set_name, None, self.__cancelled)
-        else:
-            self.__set_name(self.kwargs['name'])
-
-    def __cancelled(self):
-        status_message('PostgreSQL configuration variable setting cancelled.')
-
-    def __set_user_specified(self, value):
-        PostgreSQLSettings.set_user_specified(self.config_name, value)
-        status_message('PostgreSQL configuration variable \'' + self.config_name + '\' set.')
-
-    def __set_name(self, name):
-        self.config_name = name
-
-        if 'value' not in self.kwargs:
-            self.window.show_input_panel('Enter ' + self.config_name + ':', '', self.__set_user_specified, None, self.__cancelled)
-        else:
-            self.__set_user_specified(self.kwargs['value'])
-
-class PsqlConfigUnsetCommand(TextCommand):  
-    def description(self):
-        return 'Uses {"name": name} to unset the user-specified settings used for PostgreSQL commands. It prompts if the argument is missing.'
-    
-    def run(self, edit, *args, **kwargs): 
-        self.__edit = edit
-        self.window =  self.view.window()
-
-        if self.window is None:
-            self.window = active_window()
-        if 'name' not in kwargs:
-            self.window.show_input_panel('Enter PostgreSQL configuration variable name:', '', self.__set_name, None, self.__cancelled)
-        else:
-            self.__set_name(kwargs['name'])
-
-    def __cancelled(self):
-        status_message('PostgreSQL configuration variable unsetting cancelled.')
-
-    def __set_name(self, name):
-        self.config_name = name
-        PostgreSQLSettings.unset_user_specified(self.config_name)
-        status_message('PostgreSQL configuration variable \'' + self.config_name + '\' unset.')
-
-  
-class PsqlCommand(TextCommand):  
+class PsqlCommand(PsqlBaseTextCommand):  
     def description(self):
         return 'Executes PostgreSQL commands directly from the editor'
 
     def run(self, edit, *args, **kwargs):  
         self.edit = edit
-        self.settings = PostgreSQLSettings(kwargs)
+        kwargs['window'] = self.window
+        self.settings = kwargs
         self.encoding = self.view.encoding()
-        self.window =  self.view.window()
-
-        if self.window is None:
-            self.window = active_window()
         if self.encoding == 'Undefined':
             self.encoding = 'UTF-8'
 
@@ -246,7 +227,7 @@ class PsqlCommand(TextCommand):
         if 'password' in self.settings:
             password = self.settings['password']
         elif self.__is_password_required():
-            status_message('Enter password for PostgreSQL database.')
+            self.set_status('Enter password for PostgreSQL database.')
             self.window.show_input_panel('Enter password:', '', self.__run_with_password, None, self.__cancelled)
             return
         self.__run_with_password(password)
@@ -263,7 +244,7 @@ class PsqlCommand(TextCommand):
     def __run_with_password(self, password):
         if not password and self.__is_password_required():
             if 'warn_on_empty_password' in self.settings and self.settings['warn_on_empty_password'] and not ok_cancel_dialog('Proceed with empty password?', 'Proceed'):
-                status_message('PostgreSQL query cancelled.')
+                self.set_status('PostgreSQL query cancelled.')
                 return
         elif 'password' not in self.settings:
             self.settings['password'] = password
@@ -274,7 +255,7 @@ class PsqlCommand(TextCommand):
             self.output_panel.run_command('erase_view')
             self.output_panel.set_encoding(self.encoding)
 
-        status_message('PostgreSQL query executing...')
+        self.set_status('PostgreSQL query executing...')
         thread_infos = []
         thread_num = 0
 
@@ -328,7 +309,7 @@ class PsqlCommand(TextCommand):
                         query_id = ('file ' + filename)
                     else:
                         query_id = ('query '+ thread_info['thread_num'] + '/' + self.thread_total) if thread_info['thread_num'] != 1 and self.thread_total != 1 else 'query '
-                    status_message('PostgreSQL ' + query_id + ' completed in '+ str(completion_time) +' ms.')
+                    self.set_status('PostgreSQL ' + query_id + ' completed in '+ str(completion_time) +' ms.')
 
             if len(new_thread_infos) > 0:
                 self.execute(new_thread_infos, self.thread_total)
@@ -359,6 +340,18 @@ class PsqlCommand(TextCommand):
                 return True
             return False
 
+        def __output(self, return_code, output_text):
+            if self.parent.is_output_to_newfile():
+                view = self.parent.window.new_file()
+                view.set_scratch(True)
+                view.set_encoding(self.parent.encoding)
+                view.run_command('append', {'characters': output_text})
+                self.parent.window.focus_view(view)
+            else:
+                self.parent.settings.output_lock.acquire()
+                self.parent.output_panel.run_command('append', {'characters': output_text})
+                self.parent.window.run_command('show_panel', {'panel': 'output.psql'})
+                self.parent.settings.output_lock.release()
 
         def run(self):
             errored = False
@@ -390,18 +383,8 @@ class PsqlCommand(TextCommand):
             except BaseException as e:
                 errored = True
                 output_text = format_exc()
+                retcode = 1
 
 
-            if self.parent.is_output_to_newfile():
-                view = self.parent.window.new_file()
-                view.set_scratch(True)
-                view.set_encoding(self.parent.encoding)
-                view.run_command('append', {'characters': output_text})
-                self.parent.window.focus_view(view)
-            else:
-                self.parent.settings.output_lock.acquire()
-                self.parent.output_panel.run_command('append', {'characters': output_text})
-                self.parent.window.run_command('show_panel', {'panel': 'output.psql'})
-                self.parent.settings.output_lock.release()
-
+            set_timeout(lambda:self.__output(retcode, output_text), 0)
         

@@ -1,4 +1,4 @@
-# PostgreSQL Sublime Text Plugin
+# PostgreSQL Developer Tools
 
 ***[Sublime Text 3+](http://www.sublimetext.com/) Package. Install via an updated version of  [Package Control 2+](https://sublime.wbond.net/installation). Just &#42;&#42;DON'T&#42;&#42; install manually.***
 
@@ -7,7 +7,7 @@
 1. If you don't have it already, follow the instructions on [https://sublime.wbond.net/installation](https://sublime.wbond.net/installation) to install Package Control 2+.
 2. In Sublime Text, press <kbd>Ctrl+Shift+P</kbd> (Win, Linux) or <kbd>⌘⇧p</kbd> (OS X) to open the command palette.
 3. Choose `Package Control: Install Package`.
-4. Select **PostgreSQL**.
+4. Select **PostgreSQL Developer Tools**.
 
 ## Description 
 
@@ -18,44 +18,11 @@ See: http://www.sublimetext.com/
 
 ## Setup
 
-Create a Main.sublime-menu file in your Packages/User folder. Then add items for each database you would like to query.
+Create a Main.sublime-menu file in your Packages/User folder. Then add connections for each database you would like to query.
 
-### Add setting example
+### Add a new connection
 
-To add a new database called "my_database" to the Database menu under System Preferences:
-
-```js
-[{
-    "id": "preferences",
-    "children":
-    [{
-        "id": "package-settings",
-        "children":
-        [{
-            "id": "psql-settings",
-            "children":
-            [{
-                "id": "psql-settings-database",
-                "children":
-                [{
-                    "caption": "my_database",
-                    "command": "psql_config_set", "args": 
-                    {
-                        "name": "database",
-                        "value": "my_database"
-                    }
-                }]
-            }]
-        }]
-    }]
-}]
-```
-
-then browse to Preferences > Package Settings > PostgreSQL > Database and select your newly added database.
-
-### Add new execute option with custom values example
-
-To add a new Execute method to the non-default database "my_other_database" to the PostgreSQL menu under Tools:
+To add a new connection to the PostgreSQL menu under Tools to host "my_host", database "my_database" with user "my_user", edit the Main.sublime-menu with the following information:
 
 ```js
 [{
@@ -65,39 +32,20 @@ To add a new Execute method to the non-default database "my_other_database" to t
         "id":"psql-tools",
         "children":
         [{
-            "caption":"Execute (Other Database)",
-            "command":"psql",
-            "args": { "database": "my_other_database" }
-        }]
-    }]
-},
-{
-    "id": "preferences",
-    "children":
-    [{
-        "id": "package-settings",
-        "children":
-        [{
-            "id": "psql-settings",
+            "id": "psql-connections",
             "children":
             [{
-                "id": "psql-settings-database",
-                "children":
-                [{
-                    "caption": "my_database",
-                    "command": "psql_config_set", "args": 
-                    {
-                        "name": "database",
-                        "value": "my_database"
-                    }
-                }]
+                "id": "my-database",
+                "caption":"My Database",
+                "command":"psql_conn_new",
+                "args": { "database": "my_database", "host": "my_host", "user": "my_user"}
             }]
         }]
     }]
 }]
 ```
 
-Next click Tools > PostgreSQL > Execute (Other Database) to run against the other database. 
+Next click Tools > PostgreSQL > Connections > My Database
 
 ## References
 
@@ -111,21 +59,33 @@ Commands provided by this plugin:
         - Selected text of the current view
         - If no text selected, all of the text in the current view
 
+- `psql_conn` : `args` : `Settings`
+
+        Create new connection from current configuration settings or user supplied values.
+
+- `psql_conn_new` : `args` : `Settings`
+
+        Create new connection from default configuration settings or user supplied values.
+
+- `psql_config` : `args` : `Settings`
+
+        Update current connection configuration settings with user supplied values.
+
 - `psql_config_set` : `args` : `{name, value}`
 
-        Override default configuration settings with user supplied value.
+        Set current connection configuration settings with user supplied value.
 
 - `psql_config_unset` : `args` : `{name}`
 
-        Remove user override of default configuration settings.
+        Reset the current connection configuration settings back to default.
 
 - `psql_config_clear` : 
 
-        Clear all user overrides back to default configuration settings.
+        Reset all current connection configuration settings back to defaults.
 
 - `psql_config_save` :
 
-        Save the current overrides to the default configuration settings.
+        Save the current connection configuration settings as the defaults.
 
 
 ### Settings
@@ -206,6 +166,7 @@ The following is a mapping of PostgreSQL environment variable names to internal 
 
 Features planned for the future:
 
+- Connection management
 - Project style schema management
 - Data manipulation
 - Better support for the results
